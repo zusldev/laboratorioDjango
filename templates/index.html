@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Prestamo Laboratorio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        html {
+            background: #e6e6e6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        body {
+            background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+        }
+
+        #jumbotron {
+            background: #fafafa;
+        }
+
+        .underline::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 2px;
+            margin: 0 auto;
+            background-color: blue;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="jumbotron" class="jumbotron text-center underline">
+    <h1>Aplicación para prestamo de Laboratorio</h1>
+    <p>Made by: Liborio Zuñiga</p>
+</div>
+
+<div class="container ">
+    <div class="row offset-md-2">
+        <div class="col-sm-5">
+            <h3>Añadir equipo</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombre">Nombre de equipo:</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre"/>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea class="form-control" name="descripcion" id="descripcion"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mb-5 ">Enviar</button>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-sm-5 ">
+            <h3>Listado de equipos</h3>
+
+
+            {% for equipo in equipos %}
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ equipo.nombre }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">ID: {{ equipo.id }}</h6>
+                        <p class="card-text">{{ equipo.descripcion }}</p>
+                        <a href="{% url 'delete' equipo.id %}" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
