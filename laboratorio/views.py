@@ -11,7 +11,8 @@ def index(request):
     if request.method == 'GET':
         # si la petición es GET, obtenemos todos los equipos y los pasamos a la plantilla
         equipos = Equipo.objects.all().order_by('-id')
-        return render(request, 'index.html', {'equipos': equipos})
+        nuevo_equipo = Equipo.objects.all().order_by('-id').first()
+        return render(request, 'index.html', {'equipos': equipos, 'nuevo_equipo': nuevo_equipo})
     else:
         try:
             # si la petición es POST, obtenemos el nombre y la descripción del equipo

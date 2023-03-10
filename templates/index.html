@@ -16,7 +16,7 @@
         }
 
         #jumbotron {
-            background: #fafafa;
+            background: #fdfdfd;
         }
 
         .underline::after {
@@ -28,6 +28,20 @@
             background-color: blue;
         }
 
+        .equipo-card {
+            width: 355px;
+            height: 230px;
+        }
+
+        #title-card {
+            max-height: 70px;
+        }
+
+        .delete-equipo {
+            margin-top: 65px;
+        }
+
+
     </style>
 </head>
 
@@ -35,13 +49,16 @@
 
 <div id="jumbotron" class="jumbotron text-center underline">
     <h1>Aplicación para prestamo de Laboratorio</h1>
-    <p>Made by: Liborio Zuñiga</p>
+    <p><a href="https://github.com/zusldev" target="_blank">Made by: Liborio Zuñiga</a></p>
+
 </div>
 
-<div class="container ">
-    <div class="row offset-md-2">
+<!-- contenedor formulario equipos -->
+<div class="container border rounded p-5 mb-5">
+    <div class="row">
+        <!-- anadir equipo -->
         <div class="col-sm-5">
-            <h3>Añadir equipo</h3>
+            <h3 class="mb-3">Añadir equipo</h3>
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group">
@@ -62,26 +79,57 @@
                 {% endif %}
             </form>
         </div>
-        <div class="col-sm-5 ">
-            <h3>Listado de equipos</h3>
-
-
-            {% for equipo in equipos %}
-
+        <!-- equipo mas nuevo -->
+        {% if equipos %}
+            <div class="col-sm-5 offset-md-2">
+                <h3 class="mb-3">Equipo mas nuevo</h3>
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ equipo.nombre }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">ID: {{ equipo.id }}</h6>
-                        <p class="card-text">{{ equipo.descripcion }}</p>
-                        <a href="{% url 'delete' equipo.id %}" class="card-link">Eliminar</a>
+                    <div class="card-body bg-dark">
+                        <span class="badge bg-success align-self-start mb-4">NEW!</span>
+                        <div class="d-flex justify-content-between text-white">
+                            <h5 class="card-title">{{ nuevo_equipo.nombre }}</h5>
+                            <h6 class="card-subtitle mb-2 text-white">#{{ nuevo_equipo.id }}</h6>
+                        </div> <!-- badge para indicar que es nuevo -->
+                    </div>
+                    <div class="card-body mt-2">
+                        <p class="card-text text-dark">{{ nuevo_equipo.descripcion }}</p>
                     </div>
                 </div>
+            </div>
+        {% endif %}
 
-            {% endfor %}
 
-        </div>
     </div>
 </div>
+<!-- contenedor listado de equipos -->
+<div class="container border rounded p-5">
+    <!-- listado de equipos -->
+
+
+    <h3 class="mb-4 fw-light">Todos los equipos</h3>
+
+    <div class="row justify-content-between">
+        {% for equipo in equipos %}
+            <div class="col-md-4 mb-3">
+                <div class="card equipo-card">
+                    <div id="title-card" class="card-body d-flex justify-content-between text-white bg-primary">
+                        <h5 class="card-title">{{ equipo.nombre }}</h5>
+                        <h6 class="card-subtitle text-white">#{{ equipo.id }}</h6>
+                    </div>
+                    <div id="desc-card" class="card-body">
+                        <p class="card-text">{{ equipo.descripcion }}</p>
+                        <div class="delete-equipo">
+                            <a href="{% url 'delete' equipo.id %}" class="card-link">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
 
 </body>
 </html>
